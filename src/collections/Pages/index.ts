@@ -37,6 +37,7 @@ import { ContactHeroBlock } from '../../blocks/ContactHero/config'
 import { ContactUsFormBlock } from '../../blocks/ContactUsForm/config'
 import { FAQBlock } from '../../blocks/FAQ/config'
 import { PropertyFeaturesBlock } from '@/blocks/PropertyFeatures/config'
+import { RealEstateFilterBlock } from '@/blocks/FilterPrice/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -115,6 +116,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 ContactUsFormBlock,
                 FAQBlock,
                 PropertyFeaturesBlock,
+                RealEstateFilterBlock,
               ],
               required: true,
               admin: {

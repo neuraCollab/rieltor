@@ -74,6 +74,10 @@ export interface Config {
     properties: Property;
     agents: Agent;
     testimonials: Testimonial;
+    flats: Flat;
+    'residential-complexes': ResidentialComplex;
+    infrastructure: Infrastructure;
+    'commercial-objects': CommercialObject;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -93,6 +97,10 @@ export interface Config {
     properties: PropertiesSelect<false> | PropertiesSelect<true>;
     agents: AgentsSelect<false> | AgentsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    flats: FlatsSelect<false> | FlatsSelect<true>;
+    'residential-complexes': ResidentialComplexesSelect<false> | ResidentialComplexesSelect<true>;
+    infrastructure: InfrastructureSelect<false> | InfrastructureSelect<true>;
+    'commercial-objects': CommercialObjectsSelect<false> | CommercialObjectsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -215,16 +223,16 @@ export interface Page {
     | {
         title: string;
         subtitle?: string | null;
+        buttonText?: string | null;
+        buttonLink?: string | null;
         items?:
           | {
-              icon?: string | null;
-              title?: string | null;
-              description?: string | null;
+              icon: string;
+              title: string;
+              description: string;
               id?: string | null;
             }[]
           | null;
-        buttonText?: string | null;
-        buttonLink?: string | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'vision';
@@ -419,6 +427,13 @@ export interface Page {
         property: number | Property;
         id?: string | null;
         blockName?: string | null;
+      }
+    | {
+        buttonLabel?: string | null;
+        defaultCount?: number | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'real-estate-filter-block';
       }
   )[];
   meta?: {
@@ -1042,6 +1057,111 @@ export interface Testimonial {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flats".
+ */
+export interface Flat {
+  id: number;
+  title: string;
+  subtitle?: string | null;
+  address: string;
+  metro_station?: string | null;
+  metro_distance?: string | null;
+  secondary_metro_station?: string | null;
+  secondary_metro_distance?: string | null;
+  price: number;
+  price_per_m2?: number | null;
+  service_fee?: number | null;
+  suggested_price?: number | null;
+  description?: string | null;
+  updated_at?: string | null;
+  code?: string | null;
+  area?: number | null;
+  repair?: string | null;
+  year_built?: number | null;
+  floor?: number | null;
+  floor_total?: number | null;
+  walls?: string | null;
+  kitchen_area?: number | null;
+  rooms?: number | null;
+  ceiling_height?: number | null;
+  position_on_floor?: string | null;
+  lift?: string | null;
+  house_number?: string | null;
+  yard_type?: string | null;
+  parking?: string | null;
+  playground?: boolean | null;
+  complex?: (number | null) | ResidentialComplex;
+  layout?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "residential-complexes".
+ */
+export interface ResidentialComplex {
+  id: number;
+  title: string;
+  city: string;
+  address: string;
+  developer?: string | null;
+  walls_material?: string | null;
+  delivery_date?: string | null;
+  min_price?: number | null;
+  min_price_per_m2?: number | null;
+  finishing?: string | null;
+  description?: string | null;
+  features?:
+    | {
+        feature?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  masterplan?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "infrastructure".
+ */
+export interface Infrastructure {
+  id: number;
+  name: string;
+  type?: ('park' | 'school' | 'mall' | 'hospital') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commercial-objects".
+ */
+export interface CommercialObject {
+  id: number;
+  title: string;
+  object_type: 'land' | 'commercial_space' | 'industrial' | 'warehouse' | 'other';
+  area?: number | null;
+  city?: string | null;
+  address?: string | null;
+  map_location?: string | null;
+  price?: number | null;
+  price_per_unit?: number | null;
+  service_fee?: string | null;
+  description?: string | null;
+  updated_at?: string | null;
+  object_code?: string | null;
+  direction?: string | null;
+  line?: string | null;
+  cadastral_category?: string | null;
+  land_dimensions?: string | null;
+  surveying?: boolean | null;
+  transport_access?: string | null;
+  usage_options?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1245,6 +1365,22 @@ export interface PayloadLockedDocument {
         value: number | Testimonial;
       } | null)
     | ({
+        relationTo: 'flats';
+        value: number | Flat;
+      } | null)
+    | ({
+        relationTo: 'residential-complexes';
+        value: number | ResidentialComplex;
+      } | null)
+    | ({
+        relationTo: 'infrastructure';
+        value: number | Infrastructure;
+      } | null)
+    | ({
+        relationTo: 'commercial-objects';
+        value: number | CommercialObject;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1358,6 +1494,8 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               title?: T;
               subtitle?: T;
+              buttonText?: T;
+              buttonLink?: T;
               items?:
                 | T
                 | {
@@ -1366,8 +1504,6 @@ export interface PagesSelect<T extends boolean = true> {
                     description?: T;
                     id?: T;
                   };
-              buttonText?: T;
-              buttonLink?: T;
               id?: T;
               blockName?: T;
             };
@@ -1564,6 +1700,14 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               blockType?: T;
               property?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'real-estate-filter-block'?:
+          | T
+          | {
+              buttonLabel?: T;
+              defaultCount?: T;
               id?: T;
               blockName?: T;
             };
@@ -1897,6 +2041,107 @@ export interface TestimonialsSelect<T extends boolean = true> {
   image?: T;
   text?: T;
   rating?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flats_select".
+ */
+export interface FlatsSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  address?: T;
+  metro_station?: T;
+  metro_distance?: T;
+  secondary_metro_station?: T;
+  secondary_metro_distance?: T;
+  price?: T;
+  price_per_m2?: T;
+  service_fee?: T;
+  suggested_price?: T;
+  description?: T;
+  updated_at?: T;
+  code?: T;
+  area?: T;
+  repair?: T;
+  year_built?: T;
+  floor?: T;
+  floor_total?: T;
+  walls?: T;
+  kitchen_area?: T;
+  rooms?: T;
+  ceiling_height?: T;
+  position_on_floor?: T;
+  lift?: T;
+  house_number?: T;
+  yard_type?: T;
+  parking?: T;
+  playground?: T;
+  complex?: T;
+  layout?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "residential-complexes_select".
+ */
+export interface ResidentialComplexesSelect<T extends boolean = true> {
+  title?: T;
+  city?: T;
+  address?: T;
+  developer?: T;
+  walls_material?: T;
+  delivery_date?: T;
+  min_price?: T;
+  min_price_per_m2?: T;
+  finishing?: T;
+  description?: T;
+  features?:
+    | T
+    | {
+        feature?: T;
+        id?: T;
+      };
+  masterplan?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "infrastructure_select".
+ */
+export interface InfrastructureSelect<T extends boolean = true> {
+  name?: T;
+  type?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commercial-objects_select".
+ */
+export interface CommercialObjectsSelect<T extends boolean = true> {
+  title?: T;
+  object_type?: T;
+  area?: T;
+  city?: T;
+  address?: T;
+  map_location?: T;
+  price?: T;
+  price_per_unit?: T;
+  service_fee?: T;
+  description?: T;
+  updated_at?: T;
+  object_code?: T;
+  direction?: T;
+  line?: T;
+  cadastral_category?: T;
+  land_dimensions?: T;
+  surveying?: T;
+  transport_access?: T;
+  usage_options?: T;
   updatedAt?: T;
   createdAt?: T;
 }

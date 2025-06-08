@@ -1,6 +1,6 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
-
+// import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import sharp from 'sharp' // sharp-import
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -19,6 +19,10 @@ import { getServerSideURL } from './utilities/getURL'
 import { Properties } from './collections/Properties'
 import { Agents } from './collections/Agents'
 import { Testimonials } from './collections/Testimonials'
+import { Flats } from './collections/Flat'
+import { ResidentialComplexes } from './collections/ResidentialComplex'
+import { Infrastructure } from './collections/Infrastructure'
+import { CommercialObjects } from './collections/Commercial'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -67,7 +71,23 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Properties, Agents, Testimonials],
+  // db: mongooseAdapter({
+  //   url: process.env.DATABASE_URI || '',
+  // }),
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    Properties,
+    Agents,
+    Testimonials,
+    Flats,
+    ResidentialComplexes,
+    Infrastructure,
+    CommercialObjects,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [
