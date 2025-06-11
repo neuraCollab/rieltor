@@ -4,6 +4,7 @@ export const Flats: CollectionConfig = {
   slug: 'flats',
   admin: {
     useAsTitle: 'title',
+    group: 'Недвижимость',
   },
   access: {
     read: () => true,
@@ -11,162 +12,97 @@ export const Flats: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: 'Название',
       type: 'text',
       required: true,
     },
     {
-      name: 'subtitle',
-      type: 'text',
-      label: 'Своя ставка',
+      name: 'type',
+      label: 'Тип недвижимости',
+      type: 'select',
+      options: [
+        { label: 'Квартира', value: 'flat' },
+        { label: 'Апартаменты', value: 'apartment' },
+        { label: 'Таунхаус', value: 'townhouse' },
+      ],
+      defaultValue: 'flat',
     },
     {
-      name: 'address',
-      type: 'text',
-      required: true,
+      name: 'category',
+      label: 'Категория',
+      type: 'select',
+      options: [
+        { label: 'Купить', value: 'buy' },
+        { label: 'Снять', value: 'rent' },
+      ],
+      defaultValue: 'buy',
     },
     {
-      name: 'metro_station',
-      type: 'text',
-      label: 'Ближайшая станция метро',
-    },
-    {
-      name: 'metro_distance',
-      type: 'text',
-      label: 'Время до метро (например, "38 мин. (2.5 км)")',
-    },
-    {
-      name: 'secondary_metro_station',
-      type: 'text',
-      label: 'Вторая станция метро',
-    },
-    {
-      name: 'secondary_metro_distance',
-      type: 'text',
-      label: 'Время до второй станции',
+      name: 'rooms',
+      label: 'Количество комнат',
+      type: 'select',
+      options: [
+        { label: 'Студия', value: 'studio' },
+        { label: '1', value: '1' },
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '4+', value: '4+' },
+      ],
     },
     {
       name: 'price',
+      label: 'Цена',
       type: 'number',
-      required: true,
-    },
-    {
-      name: 'price_per_m2',
-      type: 'number',
-      label: 'Цена за м²',
-    },
-    {
-      name: 'service_fee',
-      type: 'number',
-      label: 'Стоимость услуг для покупателя',
-    },
-    {
-      name: 'suggested_price',
-      type: 'number',
-      label: 'Предложить свою стоимость',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-    },
-    {
-      name: 'updated_at',
-      type: 'date',
-      label: 'Дата обновления',
-    },
-    // Характеристики - Основное
-    {
-      name: 'code',
-      type: 'text',
-      label: 'Код объекта',
     },
     {
       name: 'area',
+      label: 'Площадь (м²)',
       type: 'number',
-      label: 'Общая площадь (м²)',
-    },
-    {
-      name: 'repair',
-      type: 'text',
-      label: 'Ремонт',
-    },
-    {
-      name: 'year_built',
-      type: 'number',
-      label: 'Год постройки',
     },
     {
       name: 'floor',
-      type: 'number',
       label: 'Этаж',
+      type: 'number',
     },
     {
-      name: 'floor_total',
-      type: 'number',
+      name: 'totalFloors',
       label: 'Всего этажей',
-    },
-    {
-      name: 'walls',
-      type: 'text',
-      label: 'Стены',
-    },
-    {
-      name: 'kitchen_area',
       type: 'number',
-      label: 'Площадь кухни (м²)',
-    },
-    // О квартире
-    {
-      name: 'rooms',
-      type: 'number',
-      label: 'Количество комнат',
     },
     {
-      name: 'ceiling_height',
-      type: 'number',
-      label: 'Высота потолков (м)',
-    },
-    {
-      name: 'position_on_floor',
+      name: 'city',
+      label: 'Город',
       type: 'text',
-      label: 'Расположение на этаже',
     },
-    // О доме
     {
-      name: 'lift',
+      name: 'district',
+      label: 'Район',
       type: 'text',
-      label: 'Лифт (перечислить)',
     },
     {
-      name: 'house_number',
+      name: 'address',
+      label: 'Адрес',
       type: 'text',
-      label: 'Номер дома',
     },
     {
-      name: 'yard_type',
-      type: 'text',
-      label: 'Двор',
-    },
-    {
-      name: 'parking',
-      type: 'text',
-      label: 'Парковка',
-    },
-    {
-      name: 'playground',
+      name: 'isPublished',
+      label: 'Опубликовано',
       type: 'checkbox',
-      label: 'Есть детская площадка?',
+      defaultValue: true,
     },
-    // Привязка к комплексу
     {
-      name: 'complex',
-      type: 'relationship',
-      relationTo: 'residential-complexes',
-    },
-    // Изображение / планировка
-    {
-      name: 'layout',
+      name: 'images',
+      label: 'Фото',
       type: 'relationship',
       relationTo: 'media',
+      hasMany: true,
+    },
+    {
+      name: 'complex',
+      label: 'Жилой комплекс',
+      type: 'relationship',
+      relationTo: 'residential-complexes',
+      hasMany: false,
     },
   ],
 }

@@ -3,7 +3,8 @@ version: '3.8'
 services:
 
   postgres:
-    image: postgis/postgis:15-3.3
+    # image: postgis/postgis:15-3.3
+    image: postgres:15
     container_name: my_postgres
     restart: always
     environment:

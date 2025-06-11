@@ -3,77 +3,77 @@ import { CollectionConfig } from 'payload'
 export const ResidentialComplexes: CollectionConfig = {
   slug: 'residential-complexes',
   admin: {
-    useAsTitle: 'title',
+    useAsTitle: 'name',
+    group: 'Недвижимость',
   },
   access: {
     read: () => true,
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'city',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'address',
+      name: 'name',
+      label: 'Название ЖК',
       type: 'text',
       required: true,
     },
     {
       name: 'developer',
-      type: 'text',
       label: 'Застройщик',
-    },
-    {
-      name: 'walls_material',
       type: 'text',
-      label: 'Материал стен',
     },
     {
-      name: 'delivery_date',
-      type: 'text',
-      label: 'Срок сдачи (как текст)',
+      name: 'status',
+      label: 'Статус',
+      type: 'select',
+      options: [
+        { label: 'Сдан', value: 'completed' },
+        { label: 'Строится', value: 'building' },
+        { label: 'Не начат', value: 'not_started' },
+      ],
+      defaultValue: 'building',
     },
     {
-      name: 'min_price',
-      type: 'number',
-      label: 'Минимальная стоимость квартиры',
-    },
-    {
-      name: 'min_price_per_m2',
-      type: 'number',
-      label: 'Минимальная стоимость за м²',
-    },
-    {
-      name: 'finishing',
-      type: 'text',
-      label: 'Отделка',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-    },
-    {
-      name: 'features',
-      type: 'array',
-      label: 'Особенности дома',
-      fields: [
-        {
-          name: 'feature',
-          type: 'text',
-        },
+      name: 'class',
+      label: 'Класс недвижимости',
+      type: 'select',
+      options: [
+        { label: 'Эконом', value: 'economy' },
+        { label: 'Бизнес', value: 'business' },
+        { label: 'Премиум', value: 'premium' },
       ],
     },
     {
-      name: 'masterplan',
+      name: 'city',
+      label: 'Город',
+      type: 'text',
+    },
+    {
+      name: 'district',
+      label: 'Район',
+      type: 'text',
+    },
+    {
+      name: 'address',
+      label: 'Адрес',
+      type: 'text',
+    },
+    {
+      name: 'description',
+      label: 'Описание',
+      type: 'textarea',
+    },
+    {
+      name: 'image',
+      label: 'Логотип / фото',
       type: 'relationship',
       relationTo: 'media',
-      label: 'Генплан',
+    },
+    {
+      name: 'flats',
+      label: 'Квартиры в ЖК',
+      type: 'relationship',
+      relationTo: 'flats',
+      hasMany: true,
     },
   ],
 }

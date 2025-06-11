@@ -15,7 +15,31 @@ const config = {
   darkMode: ['selector', '[data-theme="dark"]'],
   plugins: [tailwindcssAnimate, typography, flowbite.plugin(), daisyui],
   daisyui: {
-    themes: ['synthwave', 'bumblebee'],
+    themes: [
+      {
+        tropicallight: {
+          primary: '#00C2A0', // Tropical teal
+          secondary: '#FFD166', // Sun yellow
+          accent: '#FF6F61', // Coral
+          neutral: '#2A2E37', // Deep gray for contrast
+          'base-100': '#F6FFF8', // Light background
+          info: '#3ABFF8', // Sky blue
+          success: '#43E97B', // Lush green
+          warning: '#FFD166', // Sun yellow
+          error: '#FF6F61', // Coral
+          '--rounded-box': '1rem',
+          '--rounded-btn': '0.5rem',
+          '--rounded-badge': '1.9rem',
+          '--animation-btn': '0.25s',
+          '--animation-input': '0.2s',
+          '--btn-text-case': 'uppercase',
+          '--navbar-padding': '0.5rem',
+          '--border-btn': '1px',
+        },
+      },
+      'synthwave',
+      'bumblebee',
+    ],
     darkTheme: 'synthwave', // Set this if you want to override default dark mode behavior
   },
   prefix: '',

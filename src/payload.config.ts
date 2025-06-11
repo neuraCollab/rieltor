@@ -21,8 +21,8 @@ import { Agents } from './collections/Agents'
 import { Testimonials } from './collections/Testimonials'
 import { Flats } from './collections/Flat'
 import { ResidentialComplexes } from './collections/ResidentialComplex'
-import { Infrastructure } from './collections/Infrastructure'
-import { CommercialObjects } from './collections/Commercial'
+import { Infrastructures } from './collections/Infrastructure'
+import { Commercial } from './collections/Commercial'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -85,8 +85,8 @@ export default buildConfig({
     Testimonials,
     Flats,
     ResidentialComplexes,
-    Infrastructure,
-    CommercialObjects,
+    Infrastructures,
+    Commercial,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

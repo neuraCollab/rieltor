@@ -1,9 +1,11 @@
 import { CollectionConfig } from 'payload'
 
-export const CommercialObjects: CollectionConfig = {
-  slug: 'commercial-objects',
+export const Commercial: CollectionConfig = {
+  slug: 'commercial',
   admin: {
     useAsTitle: 'title',
+    group: 'Недвижимость',
+    defaultColumns: ['title', 'type', 'price', 'area', 'city'],
   },
   access: {
     read: () => true,
@@ -11,103 +13,98 @@ export const CommercialObjects: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: 'Название объекта',
       type: 'text',
       required: true,
     },
     {
-      name: 'object_type',
+      name: 'type',
+      label: 'Тип коммерческой недвижимости',
       type: 'select',
-      required: true,
       options: [
-        { label: 'Земельный участок', value: 'land' },
-        { label: 'Коммерческое помещение', value: 'commercial_space' },
-        { label: 'Производственная база', value: 'industrial' },
+        { label: 'Офис', value: 'office' },
+        { label: 'Магазин', value: 'retail' },
         { label: 'Склад', value: 'warehouse' },
-        { label: 'Другое', value: 'other' },
+        { label: 'Производство', value: 'manufacturing' },
+        { label: 'Помещение свободного назначения', value: 'free-purpose' },
       ],
+      required: true,
+    },
+    {
+      name: 'category',
+      label: 'Категория',
+      type: 'select',
+      options: [
+        { label: 'Купить', value: 'buy' },
+        { label: 'Снять', value: 'rent' },
+      ],
+      defaultValue: 'buy',
+    },
+    {
+      name: 'price',
+      label: 'Цена',
+      type: 'number',
+      required: true,
+    },
+    {
+      name: 'currency',
+      label: 'Валюта',
+      type: 'select',
+      options: [
+        { label: 'RUB', value: 'RUB' },
+        { label: 'USD', value: 'USD' },
+        { label: 'EUR', value: 'EUR' },
+      ],
+      defaultValue: 'RUB',
     },
     {
       name: 'area',
+      label: 'Площадь (м²)',
       type: 'number',
-      label: 'Площадь (сотки или м²)',
+      required: true,
     },
     {
       name: 'city',
+      label: 'Город',
+      type: 'text',
+    },
+    {
+      name: 'district',
+      label: 'Район',
       type: 'text',
     },
     {
       name: 'address',
+      label: 'Адрес',
       type: 'text',
-      label: 'Адрес (если есть)',
-    },
-    {
-      name: 'map_location',
-      type: 'text',
-      label: 'Местоположение на карте (координаты или описание)',
-    },
-    {
-      name: 'price',
-      type: 'number',
-      label: 'Стоимость',
-    },
-    {
-      name: 'price_per_unit',
-      type: 'number',
-      label: 'Стоимость за единицу (сотка или м²)',
-    },
-    {
-      name: 'service_fee',
-      type: 'text',
-      label: 'Стоимость услуг',
     },
     {
       name: 'description',
+      label: 'Описание',
       type: 'textarea',
     },
     {
-      name: 'updated_at',
-      type: 'date',
-      label: 'Дата обновления',
-    },
-    {
-      name: 'object_code',
-      type: 'text',
-      label: 'Код объекта',
-    },
-    {
-      name: 'direction',
-      type: 'text',
-      label: 'Направление (например, Тюмень)',
-    },
-    {
-      name: 'line',
-      type: 'text',
-      label: 'Линия (например, Первая)',
-    },
-    {
-      name: 'cadastral_category',
-      type: 'text',
-      label: 'Категория земель',
-    },
-    {
-      name: 'land_dimensions',
-      type: 'text',
-      label: 'Размеры участка (например, "88м х 246м")',
-    },
-    {
-      name: 'surveying',
+      name: 'isPublished',
+      label: 'Опубликовано',
       type: 'checkbox',
-      label: 'Межевание есть?',
+      defaultValue: true,
     },
     {
-      name: 'transport_access',
+      name: 'images',
+      label: 'Фото',
+      type: 'relationship',
+      relationTo: 'media',
+      hasMany: true,
+    },
+    {
+      name: 'contact',
+      label: 'Контактное лицо',
       type: 'text',
-      label: 'Транспортная доступность',
     },
     {
-      name: 'usage_options',
-      type: 'textarea',
-      label: 'Варианты использования / стратегии инвестиций',
+      name: 'phone',
+      label: 'Телефон',
+      type: 'text',
     },
   ],
 }
