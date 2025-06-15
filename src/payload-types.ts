@@ -429,11 +429,30 @@ export interface Page {
         blockName?: string | null;
       }
     | {
-        buttonLabel?: string | null;
-        defaultCount?: number | null;
+        filters: {
+          label: string;
+          collection: string;
+          fields: {
+            name: string;
+            label?: string | null;
+            type: 'text' | 'number' | 'checkbox' | 'select' | 'multi-select' | 'range';
+            options?:
+              | {
+                  value: string;
+                  label?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            min?: number | null;
+            max?: number | null;
+            step?: number | null;
+            id?: string | null;
+          }[];
+          id?: string | null;
+        }[];
         id?: string | null;
         blockName?: string | null;
-        blockType: 'real-estate-filter-block';
+        blockType: 'house-filter';
       }
   )[];
   meta?: {
@@ -1679,11 +1698,34 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
-        'real-estate-filter-block'?:
+        'house-filter'?:
           | T
           | {
-              buttonLabel?: T;
-              defaultCount?: T;
+              filters?:
+                | T
+                | {
+                    label?: T;
+                    collection?: T;
+                    fields?:
+                      | T
+                      | {
+                          name?: T;
+                          label?: T;
+                          type?: T;
+                          options?:
+                            | T
+                            | {
+                                value?: T;
+                                label?: T;
+                                id?: T;
+                              };
+                          min?: T;
+                          max?: T;
+                          step?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
               id?: T;
               blockName?: T;
             };

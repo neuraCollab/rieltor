@@ -23,7 +23,7 @@ import { CallToActionNewBlock } from './house/CallToActionNew/component'
 import { ContactHeroBlock } from './house/ContactHero/component'
 import { ContactUsFormBlock } from './house/ContactUsForm/component'
 import { FAQBlock } from './base/FAQ/component'
-import { RealEstateFilterBlock } from './house/FilterPrice/Component'
+import { UniversalFilterTabs } from './house/HouseFilter/Component'
 
 const blockComponents = {
   properties: PropertiesBlock,
@@ -47,7 +47,7 @@ const blockComponents = {
   'contact-hero': ContactHeroBlock,
   'contact-us-form': ContactUsFormBlock,
   faq: FAQBlock,
-  'real-estate-filter-block': RealEstateFilterBlock,
+  'house-filter': UniversalFilterTabs,
 }
 
 export const RenderBlocks: React.FC<{
