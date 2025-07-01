@@ -35,31 +35,42 @@ export const MediaBlock: React.FC<Props> = (props) => {
   return (
     <div
       className={cn(
-        '',
+        'px-4 py-8',
         {
-          container: enableGutter,
+          'max-w-7xl mx-auto': enableGutter,
         },
         className,
       )}
     >
       {(media || staticImage) && (
-        <Media
-          imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
-          resource={media}
-          src={staticImage}
-        />
+        <div 
+          className="opacity-0 animate-fadeInUp"
+          style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}
+        >
+          <Media
+            imgClassName={cn(
+              'rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] w-full h-auto object-cover',
+              imgClassName
+            )}
+            resource={media}
+            src={staticImage}
+          />
+        </div>
       )}
       {caption && (
         <div
           className={cn(
-            'mt-6',
+            'mt-6 opacity-0 animate-fadeInUp',
             {
-              container: !disableInnerContainer,
+              'max-w-4xl mx-auto': !disableInnerContainer,
             },
             captionClassName,
           )}
+          style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}
         >
-          <RichText data={caption} enableGutter={false} />
+          <div className="text-gray-600 text-center">
+            <RichText data={caption} enableGutter={false} />
+          </div>
         </div>
       )}
     </div>

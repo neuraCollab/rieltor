@@ -14,12 +14,12 @@ export type AboutHeroBlockType = {
 
 export const AboutHeroBlock: React.FC<AboutHeroBlockType> = ({ label, title, images }) => {
   return (
-    <section className="py-24 px-4 bg-base-100">
-      <div className="container mx-auto max-w-6xl">
+    <section className="px-4 py-16">
+      <div className="max-w-6xl mx-auto">
         {/* Заголовок */}
-        <div className="text-center mb-16">
-          <div className="text-primary mb-4">{label}</div>
-          <h1 className="text-5xl font-normal max-w-4xl mx-auto">
+        <div className="text-center mb-12 opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards]">
+          <div className="text-primary mb-4 font-medium">{label}</div>
+          <h1 className="text-4xl md:text-5xl font-bold max-w-4xl mx-auto text-gray-900 leading-tight">
             {title.split('Real Estate').map((part, i) => (
               <React.Fragment key={i}>
                 {part}
@@ -30,10 +30,10 @@ export const AboutHeroBlock: React.FC<AboutHeroBlockType> = ({ label, title, ima
         </div>
 
         {/* Сетка изображений */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Левое изображение */}
-          <div className="md:col-span-5">
-            <div className="aspect-[3/4] rounded-2xl overflow-hidden">
+          <div className="lg:col-span-5 opacity-0 animate-[fadeInUp_0.6s_ease-out_0.3s_forwards]">
+            <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group">
               <img
                 src={
                   typeof images[0]?.image === 'object' && images[0]?.image?.url
@@ -41,14 +41,14 @@ export const AboutHeroBlock: React.FC<AboutHeroBlockType> = ({ label, title, ima
                     : '/placeholder.jpg'
                 }
                 alt="About us"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
           </div>
 
           {/* Правая колонка с двумя изображениями */}
-          <div className="md:col-span-7 space-y-6">
-            <div className="aspect-[16/9] rounded-2xl overflow-hidden">
+          <div className="lg:col-span-7 space-y-6">
+            <div className="aspect-[16/9] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group opacity-0 animate-[fadeInUp_0.6s_ease-out_0.5s_forwards]">
               <img
                 src={
                   typeof images[1]?.image === 'object' && images[1]?.image?.url
@@ -56,10 +56,10 @@ export const AboutHeroBlock: React.FC<AboutHeroBlockType> = ({ label, title, ima
                     : '/placeholder.jpg'
                 }
                 alt="About us"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
-            <div className="aspect-[16/9] rounded-2xl overflow-hidden">
+            <div className="aspect-[16/9] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group opacity-0 animate-[fadeInUp_0.6s_ease-out_0.7s_forwards]">
               <img
                 src={
                   typeof images[2]?.image === 'object' && images[2]?.image?.url
@@ -67,7 +67,7 @@ export const AboutHeroBlock: React.FC<AboutHeroBlockType> = ({ label, title, ima
                     : '/placeholder.jpg'
                 }
                 alt="About us"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
           </div>
