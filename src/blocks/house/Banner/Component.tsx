@@ -10,13 +10,16 @@ type Props = {
 
 export const BannerBlock: React.FC<Props> = ({ className, content, style }) => {
   return (
-    <div className={cn('mx-auto my-8 w-full', className)}>
+    <div 
+      className={cn('mx-auto my-8 w-full opacity-0 animate-fadeInUp', className)}
+      style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}
+    >
       <div
-        className={cn('border py-3 px-6 flex items-center rounded', {
-          'border-border bg-card': style === 'info',
-          'border-error bg-error/30': style === 'error',
-          'border-success bg-success/30': style === 'success',
-          'border-warning bg-warning/30': style === 'warning',
+        className={cn('border rounded-lg py-4 px-6 flex items-center shadow-sm transition-all duration-200 hover:shadow-md', {
+          'border-gray-200 bg-gray-50 text-gray-800': style === 'info',
+          'border-red-200 bg-red-50 text-red-800': style === 'error',
+          'border-green-200 bg-green-50 text-green-800': style === 'success',
+          'border-yellow-200 bg-yellow-50 text-yellow-800': style === 'warning',
         })}
       >
         <RichText data={content} enableGutter={false} enableProse={false} />

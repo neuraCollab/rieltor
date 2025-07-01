@@ -24,12 +24,12 @@ export const ContactHeroBlock: React.FC<ContactHeroBlockType> = ({
   location,
 }) => {
   return (
-    <section className="py-24 px-4 bg-base-100">
-      <div className="container mx-auto max-w-6xl">
+    <section className="px-4 py-16">
+      <div className="max-w-6xl mx-auto">
         {/* Заголовок */}
-        <div className="text-center mb-16">
-          <div className="text-sm text-primary mb-2">{label}</div>
-          <h2 className="text-4xl font-normal">
+        <div className="text-center mb-12 opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards]">
+          <div className="text-sm text-primary mb-2 font-medium">{label}</div>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
             {title.split('assistance').map((part, i) => (
               <React.Fragment key={i}>
                 {part}
@@ -40,41 +40,41 @@ export const ContactHeroBlock: React.FC<ContactHeroBlockType> = ({
         </div>
 
         {/* Основной контент */}
-        <div className="relative rounded-3xl overflow-hidden">
+        <div className="relative rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 opacity-0 animate-[fadeInUp_0.6s_ease-out_0.3s_forwards]">
           {/* Изображение */}
-          <div className="aspect-[16/9] md:aspect-[21/9]">
+          <div className="aspect-[16/9] md:aspect-[21/9] group">
             <img
               src={image?.url || '/placeholder.jpg'}
               alt="Contact"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           </div>
 
           {/* Контактная информация */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-8">
-            <div className="flex flex-col md:flex-row gap-8 justify-center text-white">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-6 md:p-8">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-8 justify-center text-white">
               {/* Email */}
               <a
                 href={`mailto:${email}`}
-                className="flex items-center gap-3 hover:text-primary transition-colors"
+                className="flex items-center gap-3 hover:text-primary transition-all duration-200 transform hover:scale-105 p-2 rounded-lg hover:bg-white/10 backdrop-blur-sm"
               >
-                <Mail className="w-5 h-5" />
-                <span>{email}</span>
+                <Mail className="w-5 h-5 flex-shrink-0" />
+                <span className="font-medium">{email}</span>
               </a>
 
               {/* Телефон */}
               <a
                 href={`tel:${phone}`}
-                className="flex items-center gap-3 hover:text-primary transition-colors"
+                className="flex items-center gap-3 hover:text-primary transition-all duration-200 transform hover:scale-105 p-2 rounded-lg hover:bg-white/10 backdrop-blur-sm"
               >
-                <Phone className="w-5 h-5" />
-                <span>{phone}</span>
+                <Phone className="w-5 h-5 flex-shrink-0" />
+                <span className="font-medium">{phone}</span>
               </a>
 
               {/* Локация */}
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5" />
-                <span>{location}</span>
+              <div className="flex items-center gap-3 p-2 rounded-lg">
+                <MapPin className="w-5 h-5 flex-shrink-0" />
+                <span className="font-medium">{location}</span>
               </div>
             </div>
           </div>

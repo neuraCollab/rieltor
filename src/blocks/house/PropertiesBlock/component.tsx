@@ -54,18 +54,18 @@ export const PropertiesBlock: React.FC<PropertyBlockType> = ({
       bedrooms: [...new Set(properties.map((p) => p.bedrooms))].sort((a, b) => a - b),
       bathrooms: [...new Set(properties.map((p) => p.bathrooms))].sort((a, b) => a - b),
       area: [
-        { label: 'All', value: 'all' },
-        { label: '< 1000 sq.ft', value: '0-1000' },
-        { label: '1000-2000 sq.ft', value: '1000-2000' },
-        { label: '2000-3000 sq.ft', value: '2000-3000' },
-        { label: '> 3000 sq.ft', value: '3000+' },
+        { label: 'Все', value: 'all' },
+        { label: '< 100 м²', value: '0-100' },
+        { label: '100-200 м²', value: '100-200' },
+        { label: '200-300 м²', value: '200-300' },
+        { label: '> 300 м²', value: '300+' },
       ],
       price: [
-        { label: 'All', value: 'all' },
-        { label: '< $200,000', value: '0-200000' },
-        { label: '$200,000 - $500,000', value: '200000-500000' },
-        { label: '$500,000 - $1,000,000', value: '500000-1000000' },
-        { label: '> $1,000,000', value: '1000000+' },
+        { label: 'Все', value: 'all' },
+        { label: '< 20 млн ₽', value: '0-20000000' },
+        { label: '20-50 млн ₽', value: '20000000-50000000' },
+        { label: '50-100 млн ₽', value: '50000000-100000000' },
+        { label: '> 100 млн ₽', value: '100000000+' },
       ],
     }
   }, [properties])
@@ -169,159 +169,184 @@ export const PropertiesBlock: React.FC<PropertyBlockType> = ({
   }
 
   return (
-    <section className="container mx-auto px-4 py-12 font-satoshi">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-3xl font-normal">{title}</h2>
-        {showAllLink && (
-          <a href={showAllLink} className="btn btn-sm btn-neutral font-normal">
-            All properties
-          </a>
+    <section className="px-4 py-16">
+      <div className="max-w-6xl mx-auto">
+        <div 
+          className="flex justify-between items-center mb-8 opacity-0 animate-fadeInUp"
+          style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">{title}</h2>
+          {showAllLink && (
+            <a href={showAllLink} className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all duration-200 font-medium">
+              Все объекты
+            </a>
+          )}
+        </div>
+
+        {enableFilters && (
+          <div 
+            className="mb-8 space-y-4 opacity-0 animate-fadeInUp"
+            style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}
+          >
+            {/* Поиск */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Поиск недвижимости..."
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all duration-200"
+                value={activeFilters.search}
+                onChange={(e) => setActiveFilters({ ...activeFilters, search: e.target.value })}
+              />
+              <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+            </div>
+
+            {/* Фильтры */}
+            <div className="flex flex-wrap gap-4">
+              {/* Тип недвижимости */}
+              <select
+                className="px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all duration-200 bg-white"
+                value={activeFilters.type}
+                onChange={(e) => setActiveFilters({ ...activeFilters, type: e.target.value })}
+              >
+                <option value="all">Все типы</option>
+                <option value="sale">Продажа</option>
+                <option value="rent">Аренда</option>
+              </select>
+
+              {/* Спальни */}
+              <select
+                className="px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all duration-200 bg-white"
+                value={activeFilters.bedrooms}
+                onChange={(e) => setActiveFilters({ ...activeFilters, bedrooms: e.target.value })}
+              >
+                <option value="all">Все спальни</option>
+                {filterOptions.bedrooms.map((num) => (
+                  <option key={num} value={num}>
+                    {num} спален
+                  </option>
+                ))}
+              </select>
+
+              {/* Ванные */}
+              <select
+                className="px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all duration-200 bg-white"
+                value={activeFilters.bathrooms}
+                onChange={(e) => setActiveFilters({ ...activeFilters, bathrooms: e.target.value })}
+              >
+                <option value="all">Все ванные</option>
+                {filterOptions.bathrooms.map((num) => (
+                  <option key={num} value={num}>
+                    {num} ванных
+                  </option>
+                ))}
+              </select>
+
+              {/* Площадь */}
+              <select
+                className="px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all duration-200 bg-white"
+                value={activeFilters.area}
+                onChange={(e) => setActiveFilters({ ...activeFilters, area: e.target.value })}
+              >
+                {filterOptions.area.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+
+              {/* Цена */}
+              <select
+                className="px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all duration-200 bg-white"
+                value={activeFilters.priceRange}
+                onChange={(e) => setActiveFilters({ ...activeFilters, priceRange: e.target.value })}
+              >
+                {filterOptions.price.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+
+              {/* Кнопка сброса */}
+              <button onClick={resetFilters} className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-200 font-medium">
+                Сбросить фильтры
+              </button>
+            </div>
+
+            {/* Результаты поиска */}
+            <div className="text-sm text-gray-600">
+              Найдено {filteredProperties.length} объектов
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {displayedProperties.map((property, index) => (
+            <div 
+              key={property.id} 
+              className="opacity-0 animate-fadeInUp"
+              style={{ 
+                animationDelay: `${0.5 + index * 0.1}s`,
+                animationFillMode: 'forwards'
+              }}
+            >
+              <PropertyCard property={property} />
+            </div>
+          ))}
+        </div>
+
+        {filteredProperties.length > itemsPerPage && (
+          <div 
+            className="flex justify-center mt-8 opacity-0 animate-fadeInUp"
+            style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}
+          >
+            <div className="flex gap-2">
+              {Array.from({ length: Math.ceil(filteredProperties.length / itemsPerPage) }).map(
+                (_, index) => (
+                  <button
+                    key={index}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                      currentPage === index + 1 
+                        ? 'bg-primary text-white shadow-sm' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                ),
+              )}
+            </div>
+          </div>
+        )}
+
+        {filteredProperties.length === 0 && (
+          <div 
+            className="text-center py-12 opacity-0 animate-fadeInUp"
+            style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}
+          >
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">Объекты не найдены</h3>
+            <p className="text-gray-600">Попробуйте изменить фильтры</p>
+          </div>
         )}
       </div>
-
-      {enableFilters && (
-        <div className="mb-8 space-y-4">
-          {/* Поиск */}
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search properties..."
-              className="input input-bordered w-full pr-10"
-              value={activeFilters.search}
-              onChange={(e) => setActiveFilters({ ...activeFilters, search: e.target.value })}
-            />
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/50 w-5 h-5" />
-          </div>
-
-          {/* Фильтры */}
-          <div className="flex flex-wrap gap-4">
-            {/* Тип недвижимости */}
-            <select
-              className="select select-bordered font-normal"
-              value={activeFilters.type}
-              onChange={(e) => setActiveFilters({ ...activeFilters, type: e.target.value })}
-            >
-              <option value="all">All Types</option>
-              <option value="sale">For Sale</option>
-              <option value="rent">For Rent</option>
-            </select>
-
-            {/* Спальни */}
-            <select
-              className="select select-bordered font-normal"
-              value={activeFilters.bedrooms}
-              onChange={(e) => setActiveFilters({ ...activeFilters, bedrooms: e.target.value })}
-            >
-              <option value="all">All Bedrooms</option>
-              {filterOptions.bedrooms.map((num) => (
-                <option key={num} value={num}>
-                  {num} Bedrooms
-                </option>
-              ))}
-            </select>
-
-            {/* Ванные */}
-            <select
-              className="select select-bordered font-normal"
-              value={activeFilters.bathrooms}
-              onChange={(e) => setActiveFilters({ ...activeFilters, bathrooms: e.target.value })}
-            >
-              <option value="all">All Bathrooms</option>
-              {filterOptions.bathrooms.map((num) => (
-                <option key={num} value={num}>
-                  {num} Bathrooms
-                </option>
-              ))}
-            </select>
-
-            {/* Площадь */}
-            <select
-              className="select select-bordered font-normal"
-              value={activeFilters.area}
-              onChange={(e) => setActiveFilters({ ...activeFilters, area: e.target.value })}
-            >
-              {filterOptions.area.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-
-            {/* Цена */}
-            <select
-              className="select select-bordered font-normal"
-              value={activeFilters.priceRange}
-              onChange={(e) => setActiveFilters({ ...activeFilters, priceRange: e.target.value })}
-            >
-              {filterOptions.price.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-
-            {/* Кнопка сброса */}
-            <button onClick={resetFilters} className="btn btn-outline btn-sm">
-              Reset Filters
-            </button>
-          </div>
-
-          {/* Результаты поиска */}
-          <div className="text-sm text-base-content/70">
-            Found {filteredProperties.length} properties
-          </div>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {displayedProperties.map((property) => (
-          <PropertyCard key={property.id} property={property} />
-        ))}
-      </div>
-
-      {filteredProperties.length > itemsPerPage && (
-        <div className="flex justify-center mt-8">
-          <div className="join">
-            {Array.from({ length: Math.ceil(filteredProperties.length / itemsPerPage) }).map(
-              (_, index) => (
-                <button
-                  key={index}
-                  className={`join-item btn btn-sm font-normal ${
-                    currentPage === index + 1 ? 'btn-active' : ''
-                  }`}
-                  onClick={() => setCurrentPage(index + 1)}
-                >
-                  {index + 1}
-                </button>
-              ),
-            )}
-          </div>
-        </div>
-      )}
-
-      {filteredProperties.length === 0 && (
-        <div className="text-center py-12">
-          <h3 className="text-xl font-normal mb-2">No properties found</h3>
-          <p className="text-base-content/70">Try adjusting your filters</p>
-        </div>
-      )}
     </section>
   )
 }
 
 const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('ru-RU', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'RUB',
       maximumFractionDigits: 0,
     }).format(price)
   }
 
   return (
-    <a href={`/properties/${property.slug}`} className="block">
-      <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all font-satoshi">
-        <figure className="relative aspect-[4/3]">
+    <a href={`/properties/${property.slug}`} className="block group">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 transform hover:translate-y-[-4px] overflow-hidden">
+        <div className="relative aspect-[4/3] overflow-hidden">
           <img
             src={
               typeof property.images[0]?.image == 'object'
@@ -329,44 +354,46 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
                 : '/placeholder.jpg'
             }
             alt={property.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
-          <div className="absolute top-4 left-4 flex gap-2">
+          <div className="absolute top-4 left-4">
             <span
-              className={`badge badge-lg px-6 py-3 font-normal ${
-                property.type === 'sale' ? 'badge-success' : 'badge-info'
+              className={`px-3 py-1 rounded-full text-sm font-medium text-white ${
+                property.type === 'sale' ? 'bg-green-500' : 'bg-blue-500'
               }`}
             >
-              {property.type === 'sale' ? 'Sale' : 'Rent'}
+              {property.type === 'sale' ? 'Продажа' : 'Аренда'}
             </span>
           </div>
-        </figure>
+        </div>
 
-        <div className="card-body p-4">
-          <div className="flex items-center gap-2 text-sm text-base-content/70 truncate font-normal">
-            <MapPin className="w-4 h-4 shrink-0" />
-            {property.address}
+        <div className="p-4">
+          <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+            <MapPin className="w-4 h-4 flex-shrink-0" />
+            <span className="truncate">{property.address}</span>
           </div>
 
-          <h3 className="card-title text-lg line-clamp-1 font-normal">{property.title}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-200">
+            {property.title}
+          </h3>
 
-          <div className="flex items-center gap-4 text-sm text-base-content/70 my-2">
-            <div className="flex items-center gap-1 font-normal">
-              <Bed className="w-4 h-4 shrink-0" />
-              {property.bedrooms} bed
+          <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+            <div className="flex items-center gap-1">
+              <Bed className="w-4 h-4" />
+              <span>{property.bedrooms} спален</span>
             </div>
-            <div className="flex items-center gap-1 font-normal">
-              <Bath className="w-4 h-4 shrink-0" />
-              {property.bathrooms} bath
+            <div className="flex items-center gap-1">
+              <Bath className="w-4 h-4" />
+              <span>{property.bathrooms} ванных</span>
             </div>
-            <div className="flex items-center gap-1 font-normal">
-              <Maximize className="w-4 h-4 shrink-0" />
-              {property.area} sq.ft
+            <div className="flex items-center gap-1">
+              <Maximize className="w-4 h-4" />
+              <span>{property.area} м²</span>
             </div>
           </div>
 
-          <div className="card-actions justify-end mt-2">
-            <span className="text-lg font-normal">{formatPrice(property.price)}</span>
+          <div className="flex justify-end">
+            <span className="text-xl font-bold text-primary">{formatPrice(property.price)}</span>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import tailwindcssAnimate from 'tailwindcss-animate'
 import typography from '@tailwindcss/typography'
-import flowbite from 'flowbite-react/tailwind'
+import { plugin } from 'flowbite-react/tailwind'
 import daisyui from 'daisyui'
 
 /** @type {import('tailwindcss').Config} */
@@ -10,10 +10,9 @@ const config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-    flowbite.content(),
   ],
   darkMode: ['selector', '[data-theme="dark"]'],
-  plugins: [tailwindcssAnimate, typography, flowbite.plugin(), daisyui],
+  plugins: [tailwindcssAnimate, typography, plugin(), daisyui],
   daisyui: {
     themes: [
       {
@@ -80,6 +79,7 @@ const config = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'fadeInUp': 'fadeInUp 0.6s ease-out forwards',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -136,6 +136,16 @@ const config = {
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
+        },
+        'fadeInUp': {
+          from: {
+            opacity: '0',
+            transform: 'translateY(20px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
         },
       },
       typography: () => ({

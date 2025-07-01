@@ -23,12 +23,12 @@ export const FAQBlock: React.FC<FAQBlockType> = ({ label, title, items }) => {
   }
 
   return (
-    <section className="py-24 px-4 bg-base-100">
-      <div className="container mx-auto max-w-4xl">
+    <section className="px-4 py-16">
+      <div className="max-w-4xl mx-auto">
         {/* Заголовок */}
-        <div className="text-center mb-16">
-          <div className="text-sm text-primary mb-2">{label}</div>
-          <h2 className="text-4xl font-normal">
+        <div className="text-center mb-12 opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards]">
+          {label && <div className="text-sm text-primary mb-2 font-medium">{label}</div>}
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
             {title.split('Answered').map((part, i) => (
               <React.Fragment key={i}>
                 {part}
@@ -43,17 +43,33 @@ export const FAQBlock: React.FC<FAQBlockType> = ({ label, title, items }) => {
           {items.map((item, index) => (
             <div
               key={index}
-              className="collapse collapse-arrow bg-base-200/50 hover:bg-base-200 transition-colors"
+              className="border border-gray-200 rounded-lg transition-all duration-300 hover:shadow-md opacity-0 animate-fadeInUp"
+              style={{ animationDelay: `${0.3 + index * 0.1}s`, animationFillMode: 'forwards' }}
             >
-              <input
-                type="radio"
-                name="faq-accordion"
-                checked={openIndex === index}
-                onChange={() => toggleItem(index)}
-              />
-              <div className="collapse-title text-xl font-normal pr-12">{item.question}</div>
-              <div className="collapse-content">
-                <p className="text-base-content/70 mt-2 leading-relaxed">{item.answer}</p>
+              <button
+                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                onClick={() => toggleItem(index)}
+              >
+                <span className="text-lg font-medium text-gray-900 pr-4">
+                  {item.question}
+                </span>
+                <ChevronDown
+                  className={`w-5 h-5 text-gray-500 transform transition-transform duration-200 flex-shrink-0 ${
+                    openIndex === index ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+              
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                }`}
+              >
+                <div className="px-6 pb-4">
+                  <p className="text-gray-600 leading-relaxed">
+                    {item.answer}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
