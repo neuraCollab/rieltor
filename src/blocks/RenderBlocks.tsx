@@ -24,6 +24,7 @@ import { ContactHeroBlock } from './house/ContactHero/component'
 import { ContactUsFormBlock } from './house/ContactUsForm/component'
 import { FAQBlock } from './base/FAQ/component'
 import { UniversalFilterTabs } from './house/HouseFilter/Component'
+import { MapBlock as MapBlockComponent } from './house/MapBlock/component'
 
 const blockComponents = {
   properties: PropertiesBlock,
@@ -48,6 +49,7 @@ const blockComponents = {
   'contact-us-form': ContactUsFormBlock,
   faq: FAQBlock,
   'house-filter': UniversalFilterTabs,
+  map: MapBlockComponent,
 }
 
 export const RenderBlocks: React.FC<{

@@ -5,6 +5,8 @@ declare global {
       DATABASE_URI: string
       NEXT_PUBLIC_SERVER_URL: string
       VERCEL_PROJECT_PRODUCTION_URL: string
+      NEXT_PUBLIC_NOMINATIM_BASE?: string
+      NEXT_PUBLIC_APP_NAME?: string
     }
   }
 }

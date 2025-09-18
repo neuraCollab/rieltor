@@ -38,6 +38,7 @@ import { ContactUsFormBlock } from '../../blocks/house/ContactUsForm/config'
 import { FAQBlock } from '../../blocks/base/FAQ/config'
 import { PropertyFeaturesBlock } from '@/blocks/house/PropertyFeatures/config'
 import { HouseFilter } from '@/blocks/house/HouseFilter/config'
+import { MapBlock } from '@/blocks/house/MapBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -117,6 +118,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 FAQBlock,
                 PropertyFeaturesBlock,
                 HouseFilter,
+                MapBlock,
               ],
               required: true,
               admin: {

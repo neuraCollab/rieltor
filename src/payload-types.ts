@@ -454,6 +454,23 @@ export interface Page {
         blockName?: string | null;
         blockType: 'house-filter';
       }
+    | {
+        blockType: 'map';
+        title?: string | null;
+        center?: {
+          lat?: number | null;
+          lng?: number | null;
+          zoom?: number | null;
+        };
+        /**
+         * Если пусто — можно будет загрузить последние объекты автоматически на фронте
+         */
+        properties?: (number | Property)[] | null;
+        autoLoad?: boolean | null;
+        limit?: number | null;
+        id?: string | null;
+        blockName?: string | null;
+      }
   )[];
   meta?: {
     title?: string | null;
@@ -1004,6 +1021,14 @@ export interface Property {
   title: string;
   slug: string;
   address: string;
+  /**
+   * Можно указать вручную или они будут рассчитаны по адресу
+   */
+  coordinates?: {
+    lat?: number | null;
+    lng?: number | null;
+    address?: string | null;
+  };
   price: number;
   type: 'sale' | 'rent';
   bedrooms: number;
@@ -1729,6 +1754,24 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        map?:
+          | T
+          | {
+              blockType?: T;
+              title?: T;
+              center?:
+                | T
+                | {
+                    lat?: T;
+                    lng?: T;
+                    zoom?: T;
+                  };
+              properties?: T;
+              autoLoad?: T;
+              limit?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T
@@ -2006,6 +2049,13 @@ export interface PropertiesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   address?: T;
+  coordinates?:
+    | T
+    | {
+        lat?: T;
+        lng?: T;
+        address?: T;
+      };
   price?: T;
   type?: T;
   bedrooms?: T;

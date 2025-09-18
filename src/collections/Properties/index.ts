@@ -8,6 +8,34 @@ export const Properties: CollectionConfig = {
   access: {
     read: () => true,
   },
+  hooks: {
+    beforeChange: [
+      async ({ data }) => {
+        try {
+          // If coordinates are missing but address is present, try to geocode
+          const hasLat = typeof data?.coordinates?.lat === 'number'
+          const hasLng = typeof data?.coordinates?.lng === 'number'
+          const address: string | undefined = data?.address || data?.coordinates?.address
+
+          if ((!hasLat || !hasLng) && address) {
+            const { geocodeAddress } = await import('@/utilities/geocode')
+            const result = await geocodeAddress(address)
+            if (result) {
+              data.coordinates = {
+                ...(data?.coordinates || {}),
+                lat: result.lat,
+                lng: result.lng,
+                address: result.displayName || address,
+              }
+            }
+          }
+        } catch (err) {
+          // Fail silently on geocoding errors to not block content changes
+        }
+        return data
+      },
+    ],
+  },
   fields: [
     {
       name: 'title',
@@ -39,6 +67,31 @@ export const Properties: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Адрес',
+    },
+    {
+      name: 'coordinates',
+      type: 'group',
+      label: 'Координаты',
+      admin: {
+        description: 'Можно указать вручную или они будут рассчитаны по адресу',
+      },
+      fields: [
+        {
+          name: 'lat',
+          type: 'number',
+          label: 'Широта',
+        },
+        {
+          name: 'lng',
+          type: 'number',
+          label: 'Долгота',
+        },
+        {
+          name: 'address',
+          type: 'text',
+          label: 'Адрес (нормализованный)',
+        },
+      ],
     },
     {
       name: 'price',
