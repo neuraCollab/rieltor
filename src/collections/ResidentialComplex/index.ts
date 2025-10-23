@@ -1,79 +1,110 @@
+// collections/ResidentialComplex.ts
 import { CollectionConfig } from 'payload'
 
-export const ResidentialComplexes: CollectionConfig = {
+export const ResidentialComplex: CollectionConfig = {
   slug: 'residential-complexes',
   admin: {
     useAsTitle: 'name',
     group: 'Недвижимость',
   },
-  access: {
-    read: () => true,
-  },
   fields: [
     {
       name: 'name',
-      label: 'Название ЖК',
       type: 'text',
       required: true,
+      label: 'Название ЖК',
     },
     {
-      name: 'developer',
-      label: 'Застройщик',
+      name: 'slug',
       type: 'text',
+      required: true,
+      unique: true,
     },
     {
       name: 'status',
+      type: 'select',
       label: 'Статус',
-      type: 'select',
+      required: true,
+      defaultValue: 'planning',
       options: [
-        { label: 'Сдан', value: 'completed' },
-        { label: 'Строится', value: 'building' },
-        { label: 'Не начат', value: 'not_started' },
-      ],
-      defaultValue: 'building',
-    },
-    {
-      name: 'class',
-      label: 'Класс недвижимости',
-      type: 'select',
-      options: [
-        { label: 'Эконом', value: 'economy' },
-        { label: 'Бизнес', value: 'business' },
-        { label: 'Премиум', value: 'premium' },
+        { value: 'planning', label: 'Планируется' },
+        { value: 'under-construction', label: 'Строится' },
+        { value: 'completed', label: 'Сдан' },
       ],
     },
     {
-      name: 'city',
-      label: 'Город',
-      type: 'text',
+      name: 'type',
+      type: 'select',
+      label: 'Класс ЖК',
+      required: true,
+      defaultValue: 'comfort',
+      options: [
+        { value: 'economy', label: 'Эконом' },
+        { value: 'comfort', label: 'Комфорт' },
+        { value: 'business', label: 'Бизнес' },
+        { value: 'premium', label: 'Премиум' },
+      ],
     },
     {
-      name: 'district',
-      label: 'Район',
+      name: 'developer',
       type: 'text',
+      label: 'Застройщик',
     },
     {
-      name: 'address',
-      label: 'Адрес',
-      type: 'text',
+      name: 'location',
+      type: 'group',
+      label: 'Расположение',
+      fields: [
+        {
+          name: 'city',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'district',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'address',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'completionDate',
+      type: 'date',
+      label: 'Срок сдачи',
     },
     {
       name: 'description',
+      type: 'richText',
       label: 'Описание',
-      type: 'textarea',
     },
     {
-      name: 'image',
-      label: 'Логотип / фото',
-      type: 'relationship',
-      relationTo: 'media',
+      name: 'images',
+      type: 'array',
+      label: 'Изображения',
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+      ],
     },
     {
-      name: 'flats',
-      label: 'Квартиры в ЖК',
-      type: 'relationship',
-      relationTo: 'flats',
-      hasMany: true,
+      name: 'infrastructure',
+      type: 'array',
+      label: 'Инфраструктура',
+      fields: [
+        {
+          name: 'item',
+          type: 'text',
+        },
+      ],
     },
   ],
 }

@@ -19,14 +19,34 @@ const config = {
       {
         tropicallight: {
           primary: '#00C2A0', // Tropical teal
+          'primary-content': '#ffffff', // Белый текст на primary
+
           secondary: '#FFD166', // Sun yellow
+          'secondary-content': '#000000', // Чёрный текст на secondary (жёлтом)
+
           accent: '#FF6F61', // Coral
-          neutral: '#2A2E37', // Deep gray for contrast
+          'accent-content': '#ffffff', // Белый текст на accent
+
+          neutral: '#2A2E37', // Deep gray
+          'neutral-content': '#ffffff',
+
           'base-100': '#F6FFF8', // Light background
-          info: '#3ABFF8', // Sky blue
-          success: '#43E97B', // Lush green
-          warning: '#FFD166', // Sun yellow
-          error: '#FF6F61', // Coral
+          'base-200': '#E0F0E5', // Slightly darker for borders/cards
+          'base-300': '#C0DCC8',
+          'base-content': '#2A2E37', // Основной текст — тёмный на светлом фоне
+
+          info: '#3ABFF8',
+          'info-content': '#000000',
+
+          success: '#43E97B',
+          'success-content': '#000000',
+
+          warning: '#FFD166',
+          'warning-content': '#000000',
+
+          error: '#FF6F61',
+          'error-content': '#ffffff',
+
           '--rounded-box': '1rem',
           '--rounded-btn': '0.5rem',
           '--rounded-badge': '1.9rem',
@@ -88,41 +108,41 @@ const config = {
       },
       colors: {
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: 'rgb(var(--accent) / <alpha-value>)',
+          foreground: 'rgb(var(--accent-content) / <alpha-value>)',
         },
-        background: 'hsl(var(--background))',
-        border: 'hsla(var(--border))',
+        background: 'rgb(var(--base-100) / <alpha-value>)',
+        border: 'rgb(var(--base-200) / <alpha-value>)',
         card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+          DEFAULT: 'rgb(var(--base-100) / <alpha-value>)',
+          foreground: 'rgb(var(--base-content) / <alpha-value>)',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: 'rgb(var(--error) / <alpha-value>)',
+          foreground: 'rgb(var(--error-content) / <alpha-value>)',
         },
-        foreground: 'hsl(var(--foreground))',
-        input: 'hsl(var(--input))',
+        foreground: 'rgb(var(--base-content) / <alpha-value>)',
+        input: 'rgb(var(--base-200) / <alpha-value>)',
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          DEFAULT: 'rgb(var(--base-200) / <alpha-value>)',
+          foreground: 'rgb(var(--base-content) / <alpha-value>)',
         },
         popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
+          DEFAULT: 'rgb(var(--base-100) / <alpha-value>)',
+          foreground: 'rgb(var(--base-content) / <alpha-value>)',
         },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: 'rgb(var(--primary) / <alpha-value>)',
+          foreground: 'rgb(var(--primary-content) / <alpha-value>)',
         },
-        ring: 'hsl(var(--ring))',
+        ring: 'rgb(var(--primary) / <alpha-value>)',
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: 'rgb(var(--secondary) / <alpha-value>)',
+          foreground: 'rgb(var(--secondary-content) / <alpha-value>)',
         },
-        success: 'hsl(var(--success))',
-        error: 'hsl(var(--error))',
-        warning: 'hsl(var(--warning))',
+        success: 'rgb(var(--success) / <alpha-value>)',
+        error: 'rgb(var(--error) / <alpha-value>)',
+        warning: 'rgb(var(--warning) / <alpha-value>)',
       },
       fontFamily: {
         mono: ['Satoshi', 'var(--font-geist-mono)'],

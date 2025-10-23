@@ -14,8 +14,6 @@ export type BlogBlockType = {
 }
 
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
-  console.log(post)
-
   return (
     <a href={`/posts/${post.slug}`} className="group">
       <div className="relative aspect-[4/3] overflow-hidden rounded-lg mb-4">

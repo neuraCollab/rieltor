@@ -76,8 +76,10 @@ export interface Config {
     testimonials: Testimonial;
     flats: Flat;
     'residential-complexes': ResidentialComplex;
-    infrastructures: Infrastructure;
     commercial: Commercial;
+    lands: Land;
+    reviews: Review;
+    messages: Message;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -99,8 +101,10 @@ export interface Config {
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     flats: FlatsSelect<false> | FlatsSelect<true>;
     'residential-complexes': ResidentialComplexesSelect<false> | ResidentialComplexesSelect<true>;
-    infrastructures: InfrastructuresSelect<false> | InfrastructuresSelect<true>;
     commercial: CommercialSelect<false> | CommercialSelect<true>;
+    lands: LandsSelect<false> | LandsSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    messages: MessagesSelect<false> | MessagesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -644,6 +648,12 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
+  slug?: string | null;
+  role: 'admin' | 'realtor';
+  phone?: string | null;
+  agency?: string | null;
+  photo?: (number | null) | Media;
+  bio?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1106,19 +1116,73 @@ export interface Testimonial {
 export interface Flat {
   id: number;
   title: string;
-  type?: ('flat' | 'apartment' | 'townhouse') | null;
-  category?: ('buy' | 'rent') | null;
-  rooms?: ('studio' | '1' | '2' | '3' | '4+') | null;
-  price?: number | null;
-  area?: number | null;
-  floor?: number | null;
-  totalFloors?: number | null;
-  city?: string | null;
-  district?: string | null;
-  address?: string | null;
-  isPublished?: boolean | null;
-  images?: (number | Media)[] | null;
-  complex?: (number | null) | ResidentialComplex;
+  slug: string;
+  realtor?: (number | null) | User;
+  propertyCategory: 'apartment' | 'apartments' | 'studio' | 'townhouse' | 'penthouse' | 'house-part';
+  transactionType: 'sale' | 'rent' | 'daily';
+  location: {
+    city: string;
+    district: string;
+    address: string;
+    metro?: string | null;
+    metroTime?: number | null;
+  };
+  /**
+   * Заполняются автоматически
+   */
+  coordinates?: {
+    lat?: number | null;
+    lng?: number | null;
+    formattedAddress?: string | null;
+  };
+  rooms: 'studio' | '1' | '2' | '3' | '4' | '5plus';
+  area: {
+    total: number;
+    living?: number | null;
+    kitchen?: number | null;
+  };
+  floorInfo?: {
+    floor?: number | null;
+    totalFloors?: number | null;
+  };
+  price: number;
+  currency?: ('RUB' | 'USD' | 'EUR') | null;
+  buildingType?: ('panel' | 'brick' | 'monolithic' | 'block' | 'wood') | null;
+  yearBuilt?: number | null;
+  ceilingHeight?: number | null;
+  images?:
+    | {
+        image: number | Media;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  layout?: (number | null) | Media;
+  video?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  amenities?:
+    | {
+        amenity: string;
+        id?: string | null;
+      }[]
+    | null;
+  residentialComplex?: (number | null) | ResidentialComplex;
+  status?: ('active' | 'sold' | 'unpublished' | 'draft') | null;
+  isFeatured?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1129,31 +1193,43 @@ export interface Flat {
 export interface ResidentialComplex {
   id: number;
   name: string;
+  slug: string;
+  status: 'planning' | 'under-construction' | 'completed';
+  type: 'economy' | 'comfort' | 'business' | 'premium';
   developer?: string | null;
-  status?: ('completed' | 'building' | 'not_started') | null;
-  class?: ('economy' | 'business' | 'premium') | null;
-  city?: string | null;
-  district?: string | null;
-  address?: string | null;
-  description?: string | null;
-  image?: (number | null) | Media;
-  flats?: (number | Flat)[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "infrastructures".
- */
-export interface Infrastructure {
-  id: number;
-  name: string;
-  type?: ('school' | 'kindergarten' | 'park' | 'shop' | 'hospital') | null;
-  distance?: number | null;
-  city?: string | null;
-  district?: string | null;
-  address?: string | null;
-  complex?: (number | null) | ResidentialComplex;
+  location: {
+    city: string;
+    district: string;
+    address: string;
+  };
+  completionDate?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  infrastructure?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1164,19 +1240,153 @@ export interface Infrastructure {
 export interface Commercial {
   id: number;
   title: string;
-  type: 'office' | 'retail' | 'warehouse' | 'manufacturing' | 'free-purpose';
-  category?: ('buy' | 'rent') | null;
+  slug: string;
+  commercialType:
+    | 'office'
+    | 'retail'
+    | 'mall'
+    | 'warehouse'
+    | 'manufacturing'
+    | 'free-purpose'
+    | 'hotel'
+    | 'restaurant'
+    | 'business-center';
+  transactionType: 'sale' | 'rent';
+  location: {
+    city: string;
+    district: string;
+    address: string;
+    highway?: string | null;
+  };
+  coordinates?: {
+    lat?: number | null;
+    lng?: number | null;
+    formattedAddress?: string | null;
+  };
+  area: {
+    total: number;
+    usable?: number | null;
+    land?: number | null;
+  };
   price: number;
+  priceType?: ('total' | 'per_sqm_month' | 'per_sqm_year') | null;
   currency?: ('RUB' | 'USD' | 'EUR') | null;
+  floor?: number | null;
+  ceilingHeight?: number | null;
+  entranceType?: ('separate' | 'through-bc' | 'from-street') | null;
+  condition?: ('finished' | 'rough' | 'needs_renovation' | 'for-finishing') | null;
+  utilities?:
+    | {
+        utility?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  contactInfo?: {
+    contactPerson?: string | null;
+    phone?: string | null;
+    email?: string | null;
+  };
+  status?: ('active' | 'sold' | 'unpublished' | 'draft') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lands".
+ */
+export interface Land {
+  id: number;
+  title: string;
+  slug: string;
+  purpose?: ('ijs' | 'snt' | 'lph' | 'commercial' | 'agricultural') | null;
   area: number;
-  city?: string | null;
-  district?: string | null;
-  address?: string | null;
-  description?: string | null;
-  isPublished?: boolean | null;
-  images?: (number | Media)[] | null;
-  contact?: string | null;
+  price: number;
+  location: {
+    city: string;
+    district: string;
+    address?: string | null;
+  };
+  communications?:
+    | {
+        communication?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  images?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  status?: ('active' | 'sold' | 'unpublished') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  realtor: number | User;
+  authorName: string;
+  authorEmail?: string | null;
+  rating: number;
+  comment: string;
+  status?: ('pending' | 'approved' | 'rejected') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages".
+ */
+export interface Message {
+  id: number;
+  message: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  attachment?: (number | null) | Media;
+  realtor: number | User;
+  subject: string;
+  name: string;
+  email: string;
   phone?: string | null;
+  property?: string | null;
+  status?: ('new' | 'in-progress' | 'completed') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1393,12 +1603,20 @@ export interface PayloadLockedDocument {
         value: number | ResidentialComplex;
       } | null)
     | ({
-        relationTo: 'infrastructures';
-        value: number | Infrastructure;
-      } | null)
-    | ({
         relationTo: 'commercial';
         value: number | Commercial;
+      } | null)
+    | ({
+        relationTo: 'lands';
+        value: number | Land;
+      } | null)
+    | ({
+        relationTo: 'reviews';
+        value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'messages';
+        value: number | Message;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -2031,6 +2249,12 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  slug?: T;
+  role?: T;
+  phone?: T;
+  agency?: T;
+  photo?: T;
+  bio?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -2118,19 +2342,64 @@ export interface TestimonialsSelect<T extends boolean = true> {
  */
 export interface FlatsSelect<T extends boolean = true> {
   title?: T;
-  type?: T;
-  category?: T;
+  slug?: T;
+  realtor?: T;
+  propertyCategory?: T;
+  transactionType?: T;
+  location?:
+    | T
+    | {
+        city?: T;
+        district?: T;
+        address?: T;
+        metro?: T;
+        metroTime?: T;
+      };
+  coordinates?:
+    | T
+    | {
+        lat?: T;
+        lng?: T;
+        formattedAddress?: T;
+      };
   rooms?: T;
+  area?:
+    | T
+    | {
+        total?: T;
+        living?: T;
+        kitchen?: T;
+      };
+  floorInfo?:
+    | T
+    | {
+        floor?: T;
+        totalFloors?: T;
+      };
   price?: T;
-  area?: T;
-  floor?: T;
-  totalFloors?: T;
-  city?: T;
-  district?: T;
-  address?: T;
-  isPublished?: T;
-  images?: T;
-  complex?: T;
+  currency?: T;
+  buildingType?: T;
+  yearBuilt?: T;
+  ceilingHeight?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  layout?: T;
+  video?: T;
+  description?: T;
+  amenities?:
+    | T
+    | {
+        amenity?: T;
+        id?: T;
+      };
+  residentialComplex?: T;
+  status?: T;
+  isFeatured?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2140,30 +2409,31 @@ export interface FlatsSelect<T extends boolean = true> {
  */
 export interface ResidentialComplexesSelect<T extends boolean = true> {
   name?: T;
-  developer?: T;
+  slug?: T;
   status?: T;
-  class?: T;
-  city?: T;
-  district?: T;
-  address?: T;
-  description?: T;
-  image?: T;
-  flats?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "infrastructures_select".
- */
-export interface InfrastructuresSelect<T extends boolean = true> {
-  name?: T;
   type?: T;
-  distance?: T;
-  city?: T;
-  district?: T;
-  address?: T;
-  complex?: T;
+  developer?: T;
+  location?:
+    | T
+    | {
+        city?: T;
+        district?: T;
+        address?: T;
+      };
+  completionDate?: T;
+  description?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  infrastructure?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2173,19 +2443,123 @@ export interface InfrastructuresSelect<T extends boolean = true> {
  */
 export interface CommercialSelect<T extends boolean = true> {
   title?: T;
-  type?: T;
-  category?: T;
+  slug?: T;
+  commercialType?: T;
+  transactionType?: T;
+  location?:
+    | T
+    | {
+        city?: T;
+        district?: T;
+        address?: T;
+        highway?: T;
+      };
+  coordinates?:
+    | T
+    | {
+        lat?: T;
+        lng?: T;
+        formattedAddress?: T;
+      };
+  area?:
+    | T
+    | {
+        total?: T;
+        usable?: T;
+        land?: T;
+      };
   price?: T;
+  priceType?: T;
   currency?: T;
-  area?: T;
-  city?: T;
-  district?: T;
-  address?: T;
+  floor?: T;
+  ceilingHeight?: T;
+  entranceType?: T;
+  condition?: T;
+  utilities?:
+    | T
+    | {
+        utility?: T;
+        id?: T;
+      };
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   description?: T;
-  isPublished?: T;
-  images?: T;
-  contact?: T;
+  contactInfo?:
+    | T
+    | {
+        contactPerson?: T;
+        phone?: T;
+        email?: T;
+      };
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lands_select".
+ */
+export interface LandsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  purpose?: T;
+  area?: T;
+  price?: T;
+  location?:
+    | T
+    | {
+        city?: T;
+        district?: T;
+        address?: T;
+      };
+  communications?:
+    | T
+    | {
+        communication?: T;
+        id?: T;
+      };
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  realtor?: T;
+  authorName?: T;
+  authorEmail?: T;
+  rating?: T;
+  comment?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages_select".
+ */
+export interface MessagesSelect<T extends boolean = true> {
+  message?: T;
+  attachment?: T;
+  realtor?: T;
+  subject?: T;
+  name?: T;
+  email?: T;
   phone?: T;
+  property?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
