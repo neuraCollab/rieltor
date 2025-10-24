@@ -216,6 +216,10 @@ export interface Page {
     | FormBlock
     | NavbarBlock
     | {
+        /**
+         * Опциональный текст для бейджа (например, "Real Estate")
+         */
+        badgeText?: string | null;
         headline: string;
         highlight?: string | null;
         subheadline?: string | null;
@@ -1017,6 +1021,10 @@ export interface NavbarBlock {
     url: string;
     id?: string | null;
   }[];
+  button: {
+    text: string;
+    url: string;
+  };
   avatar: number | Media;
   id?: string | null;
   blockName?: string | null;
@@ -1720,6 +1728,7 @@ export interface PagesSelect<T extends boolean = true> {
         hero?:
           | T
           | {
+              badgeText?: T;
               headline?: T;
               highlight?: T;
               subheadline?: T;
@@ -2101,6 +2110,12 @@ export interface NavbarBlockSelect<T extends boolean = true> {
         text?: T;
         url?: T;
         id?: T;
+      };
+  button?:
+    | T
+    | {
+        text?: T;
+        url?: T;
       };
   avatar?: T;
   id?: T;

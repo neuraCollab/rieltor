@@ -20,6 +20,27 @@ export const NavbarBlock: Block = {
       ],
     },
     {
+      name: 'button',
+      type: 'group',
+      label: 'Кнопка действия',
+      fields: [
+        {
+          name: 'text',
+          type: 'text',
+          label: 'Текст кнопки',
+          required: true,
+          defaultValue: 'Связаться',
+        },
+        {
+          name: 'url',
+          type: 'text',
+          label: 'Ссылка',
+          required: true,
+          defaultValue: '#contact',
+        },
+      ],
+    },
+    {
       name: 'avatar',
       type: 'upload',
       relationTo: 'media',

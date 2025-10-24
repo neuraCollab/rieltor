@@ -37,14 +37,16 @@ const iconMap: Record<string, LucideIcon> = {
 
 export const FeatureBlock: React.FC<FeatureBlockType> = ({ label, title, features }) => {
   return (
-    <section className="py-24 px-4 bg-base-100 text-base-content font-satoshi">
-      <div className="container mx-auto max-w-6xl">
+    <section className="px-4 py-16">
+      <div className="max-w-6xl mx-auto">
         {/* Заголовок */}
-        <div className="text-center mb-16 space-y-4">
-          <div className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm">
+        <div className="text-center mb-12 space-y-4 opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards]">
+          <div className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
             {label}
           </div>
-          <h2 className="text-4xl font-normal max-w-3xl mx-auto">{title}</h2>
+          <h2 className="text-4xl md:text-5xl font-bold max-w-3xl mx-auto text-gray-900 leading-tight">
+            {title}
+          </h2>
         </div>
 
         {/* Сетка преимуществ */}
@@ -52,12 +54,20 @@ export const FeatureBlock: React.FC<FeatureBlockType> = ({ label, title, feature
           {features.map((feature, index) => {
             const Icon = iconMap[feature.icon] || Icons.Settings
             return (
-              <div key={index} className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+              <div 
+                key={index} 
+                className="p-6 rounded-lg border border-gray-200 hover:border-primary/30 hover:shadow-md transition-all duration-300 transform hover:translate-y-[-4px] group opacity-0 animate-fadeInUp"
+                style={{ animationDelay: `${0.3 + index * 0.1}s`, animationFillMode: 'forwards' }}
+              >
+                <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                   <Icon className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-normal">{feature.title}</h3>
-                <p className="text-base-content/70 leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-semibold mb-3 text-gray-900 group-hover:text-primary transition-colors duration-200">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
             )
           })}
